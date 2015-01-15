@@ -38,6 +38,11 @@ class Stopwatch(Passing_time):
 	def __init__(self, master=None):
 		Passing_time.__init__(self,master)
 
+		self.last_bip = 0
+		self.number_bip = 1
+		self.bip_time = IntVar()
+
+		self.bip_time_entry = Entry(self, textvariable=self.bip_time)
 		self.start_button = Button(self, text="START", command=self.preprocess)
 		self.continue_button = Button(self, text="CONTINUE", command=self.continue_)
 
@@ -46,6 +51,7 @@ class Stopwatch(Passing_time):
 		self.reset_button.pack()
 		self.pause_button.pack()
 		self.continue_button.pack()
+		self.bip_time_entry.pack()
 		self.back_button.pack()
 
 	def continue_(self):
@@ -55,9 +61,19 @@ class Stopwatch(Passing_time):
 			self.passed = 0
 		self.stop_watch()
 
+	def reset(self):
+
+		self.timer['text'] = "0 : 0 : 0.0"
+		self.passed = 0
+		self.last_bip = 0
+		self.number_bip = 1
+		self.reference = 0
+		self.sys_pause = True
+
 	def preprocess(self):
 		self.reset()
 		self.reference = time()
+		self.last_bip = time()
 		self.sys_pause = False
 		self.stop_watch()
 
@@ -73,6 +89,8 @@ class Stopwatch(Passing_time):
 			self.was_paused = True
 			return
 
+
+
 		m,s = divmod(floor(self.passed),60)
 		h,m = divmod(m, 60)
 
@@ -81,7 +99,16 @@ class Stopwatch(Passing_time):
 		self.timer['text'] = "%s : %s : %s.%s" % (h,m,s,ms)
 		self.update()
 
+		if self.bip_time.get():
+			lasted = time()-self.last_bip
+			if lasted > self.bip_time.get():
+				self.last_bip = self.reference + self.number_bip*self.bip_time.get()
+				self.number_bip += 1
+				winsound.PlaySound('beep.wav', winsound.SND_FILENAME)
+
 		self.after(100, self.stop_watch)
+
+
 
 #===================================================================================================	
 class Timer(Passing_time):
