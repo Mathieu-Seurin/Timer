@@ -1,14 +1,15 @@
-from time import time, sleep
 from tkinter import *
+from time import time, sleep
 from math import ceil, floor
 import winsound
-from tools import *
 
-
+#===============================================================================================
 class Passing_time(Frame):
 
 	def __init__(self, master=None):
 		Frame.__init__(self, master)
+
+		self.pack()
 
 		self.sys_pause = False
 		self.was_paused = False
@@ -31,7 +32,58 @@ class Passing_time(Frame):
 	def put_pause(self):
 		self.sys_pause = True
 
-	
+#==============================================================================================
+class Stopwatch(Passing_time):
+
+	def __init__(self, master=None):
+		Passing_time.__init__(self,master)
+
+		self.start_button = Button(self, text="START", command=self.preprocess)
+		self.continue_button = Button(self, text="CONTINUE", command=self.continue_)
+
+		self.timer.pack(side=TOP, expand=YES)
+		self.start_button.pack()
+		self.reset_button.pack()
+		self.pause_button.pack()
+		self.continue_button.pack()
+		self.back_button.pack()
+
+	def continue_(self):
+		self.sys_pause = False
+		if self.reference is 0:
+			self.reference = time()
+			self.passed = 0
+		self.stop_watch()
+
+	def preprocess(self):
+		self.reset()
+		self.reference = time()
+		self.sys_pause = False
+		self.stop_watch()
+
+	def stop_watch(self):
+
+		if self.was_paused:
+			self.was_paused = False
+			self.reference = time() - self.passed
+		else:
+			self.passed = time()- self.reference
+
+		if self.sys_pause:
+			self.was_paused = True
+			return
+
+		m,s = divmod(floor(self.passed),60)
+		h,m = divmod(m, 60)
+
+		ms = floor(self.passed*10 - floor(self.passed)*10)
+
+		self.timer['text'] = "%s : %s : %s.%s" % (h,m,s,ms)
+		self.update()
+
+		self.after(100, self.stop_watch)
+
+#===================================================================================================	
 class Timer(Passing_time):
 
 	def __init__(self, master=None):
@@ -96,41 +148,5 @@ class Timer(Passing_time):
 	
 
 		self.after(100, self.count_down)
-
-
-
-class Stopwatch(Passing_time):
-
-	def __init__(self):
-		Passing_time.__init__(self, master=None)
-
-		self.start_button = Button(self, text="START", command= lambda : self.start_chrono(self.ligne_amount.get()))
-		self.continue_button = Button(self, text="CONTINUE", command=self.continue_)
-
-
-
-
-
-	def stop_watch():
-
-		if paused:
-			paused = False
-			reference = time() - passed
-		else:
-			passed = time()- reference
-
-		if pause:
-			paused = True
-			return
-
-		m,s = divmod(floor(passed),60)
-		h,m = divmod(m, 60)
-
-		ms = floor(passed*10 - floor(passed)*10)
-
-		timer['text'] = "%s : %s : %s.%s" % (h,m,s,ms)
-		window.update()
-
-		window.after(100, lambda : stop_watch())
 
 		

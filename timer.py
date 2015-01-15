@@ -2,10 +2,12 @@
 """TIMER PROJECT"""
 #===============
 
-from time import time, sleep
 from tkinter import *
+from time import time, sleep
 from math import ceil, floor
 import winsound
+
+from app import *
 from tools import *
 
 def main():
