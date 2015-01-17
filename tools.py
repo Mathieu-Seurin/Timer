@@ -13,7 +13,6 @@ class Passing_time(Frame):
 
 		self.sys_pause = False
 		self.was_paused = False
-		self.stop = StringVar()
 		self.passed = 0
 		self.reference = 0
 
@@ -43,16 +42,22 @@ class Stopwatch(Passing_time):
 		self.bip_time = IntVar()
 
 		self.bip_time_entry = Entry(self, textvariable=self.bip_time)
+		self.bip_reset = Button(self, text="BIP", command=self.reset_bip)
 		self.start_button = Button(self, text="START", command=self.preprocess)
 		self.continue_button = Button(self, text="CONTINUE", command=self.continue_)
 
 		self.timer.pack(side=TOP, expand=YES)
 		self.start_button.pack()
+		self.bip_reset.pack()
 		self.reset_button.pack()
 		self.pause_button.pack()
 		self.continue_button.pack()
 		self.bip_time_entry.pack()
 		self.back_button.pack()
+	
+	def reset_bip(self):
+		self.last_bip = time()
+		self.number_bip = 1
 
 	def continue_(self):
 		self.sys_pause = False
@@ -81,7 +86,7 @@ class Stopwatch(Passing_time):
 
 		if self.was_paused:
 			self.was_paused = False
-			self.reference = time() - self.passed
+			self.reference = time() - self.passed 
 		else:
 			self.passed = time()- self.reference
 
@@ -115,8 +120,9 @@ class Timer(Passing_time):
 
 	def __init__(self, master=None):
 		Passing_time.__init__(self,master)
-
 		self.pack()
+
+		self.stop = IntVar()
 
 		self.ligne_amount = Entry(self, textvariable=self.stop, width=5)
 		self.start_button = Button(self, text="START", command=self.preprocess)
