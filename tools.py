@@ -6,7 +6,7 @@ import winsound
 #===============================================================================================
 class Passing_time(Frame):
 
-	def __init__(self,master):
+	def __init__(self, master=None):
 		Frame.__init__(self, master)
 
 		self.pack()
@@ -34,7 +34,7 @@ class Passing_time(Frame):
 #==============================================================================================
 class Stopwatch(Passing_time):
 
-	def __init__(self,master):
+	def __init__(self, master=None):
 		Passing_time.__init__(self,master)
 
 		self.last_bip = 0
@@ -116,20 +116,20 @@ class Stopwatch(Passing_time):
 
 
 #===================================================================================================	
-class Pomodoro(Passing_time):
+class Timer(Passing_time):
 
-	def __init__(self,master):
+	def __init__(self, master=None):
 		Passing_time.__init__(self,master)
 		self.pack()
 
 		self.stop = IntVar()
-		self.stop.set(1500)
 
+		self.ligne_amount = Entry(self, textvariable=self.stop, width=5)
 		self.start_button = Button(self, text="START", command=self.preprocess)
 		self.continue_button = Button(self, text="CONTINUE", command=self.continue_)
 
 
-		self.timer.pack(side=TOP, expand=YES)
+		self.timer.pack(side=TOP, expand=YES), self.ligne_amount.pack(side=TOP,expand=YES)
 		self.start_button.pack()
 		self.reset_button.pack()
 		self.pause_button.pack()
@@ -181,18 +181,5 @@ class Pomodoro(Passing_time):
 	
 
 		self.after(100, self.count_down)
-
-#==================================================================
-class Timer(Pomodoro):
-
-	def __init__(self,master): 
-
-		Pomodoro.__init__(self,master)
-		self.stop = IntVar()
-		self.ligne_amount = Entry(self, textvariable=self.stop, width=5)
-
-		self.ligne_amount.pack(side=TOP,expand=YES)
-
-
 
 		
