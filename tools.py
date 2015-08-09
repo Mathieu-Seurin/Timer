@@ -1,8 +1,7 @@
-from tkinter import *
+from Tkinter import *
 from time import time, sleep
 from math import ceil, floor
-import winsound
-
+import pygame
 #===============================================================================================
 class Passing_time(Frame):
 
@@ -10,7 +9,6 @@ class Passing_time(Frame):
 		Frame.__init__(self, master)
 
 		self.pack()
-
 		self.sys_pause = False
 		self.was_paused = False
 		self.passed = 0
@@ -101,7 +99,7 @@ class Stopwatch(Passing_time):
 
 		ms = floor(self.passed*10 - floor(self.passed)*10)
 
-		self.timer['text'] = "%s : %s : %s.%s" % (h,m,s,ms)
+		self.timer['text'] = "%d : %d : %d.%d" % (h,m,s,ms)
 		self.update()
 
 		if self.bip_time.get():
@@ -109,7 +107,10 @@ class Stopwatch(Passing_time):
 			if lasted > self.bip_time.get():
 				self.last_bip = self.reference + self.number_bip*self.bip_time.get()
 				self.number_bip += 1
-				winsound.PlaySound('beep.wav', winsound.SND_FILENAME)
+				##PLAY SOUND
+				sound = pygame.mixer.Sound("beep.wav")
+				sound.play()
+
 
 		self.after(100, self.stop_watch)
 
@@ -167,7 +168,9 @@ class Timer(Passing_time):
 			self.timer['text'] = "0 : 0 : 0.0"
 			self.update()
 			paused = True
-			winsound.PlaySound('alarm.wav', winsound.SND_FILENAME)
+			##PLAY SOUND
+			son = pygame.mixer.Sound("alarm.wav")
+			son.play()
 			return
 
 		m,s = divmod(floor(remain),60)
@@ -175,7 +178,7 @@ class Timer(Passing_time):
 
 		ms = floor(remain*10 - floor(remain)*10)
 
-		self.timer['text'] = "%s : %s : %s.%s" % (h,m,s,ms)
+		self.timer['text'] = "%d : %d : %d.%d" % (h,m,s,ms)
 		self.update()
 
 	

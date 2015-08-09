@@ -1,8 +1,6 @@
-from tkinter import *
+from Tkinter import *
 from time import time, sleep
 from math import ceil, floor
-import winsound
-
 from tools import *
 
 class App_timer(Tk):
@@ -21,9 +19,7 @@ class App_timer(Tk):
 		self.what_to = Label(self.frame, text="WHAT DO YOU WANT TO DO ?")
 		self.timer_state = Button(self.frame, text="TIMER",command=lambda : self.flip_state("timer"))
 		self.stop_watch_state = Button(self.frame,text="STOPWATCH",command=lambda : self.flip_state("stopwatch"))
-		self.pomodoro_state = Button(self.frame,text="POMODORO", command=lambda : self.flip_state("pomodoro"))
-
-		self.all_buttons = [self.what_to, self.timer_state, self.stop_watch_state, self.pomodoro_state]
+		self.all_buttons = [self.what_to, self.timer_state, self.stop_watch_state]
 
 		for button in self.all_buttons:
 			button.pack(fill=BOTH,expand=YES)
@@ -38,8 +34,6 @@ class App_timer(Tk):
 		elif new_state == "stopwatch":
 			self.frame = Stopwatch(self)
 
-		elif new_state == "pomodoro":
-			self.frame = Pomodoro(self)
 
 		else:
 			self.launch_menu()
